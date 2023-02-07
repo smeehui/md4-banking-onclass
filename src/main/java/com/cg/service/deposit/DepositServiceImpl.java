@@ -16,17 +16,17 @@ public class DepositServiceImpl implements IDepositService{
 
     @Override
     public List<Deposit> findAll() {
-        return null;
+        return depositRepository.findAll();
     }
 
     @Override
     public Optional<Deposit> findById(Long id) {
-        return Optional.empty();
+        return depositRepository.findById(id);
     }
 
     @Override
     public Deposit save(Deposit deposit) {
-        return null;
+        return depositRepository.save(deposit);
     }
 
     @Override

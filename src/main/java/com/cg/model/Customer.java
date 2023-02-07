@@ -14,19 +14,19 @@ public class Customer {
     private String email;
     private String phone;
 
-    @Column(precision = 10, scale = 0)
-    private BigDecimal amount;
+    @Column(precision = 10, columnDefinition ="DECIMAL DEFAULT 0")
+    private BigDecimal balance = BigDecimal.ZERO;
     private String address;
 
-    @Column(nullable = false,columnDefinition = "boolean default false")
-    private Boolean deleted;
+    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private Boolean deleted = false;
 
-    public Customer(Long id, String fullName, String email, String phone, BigDecimal amount, String address, Boolean deleted) {
+    public Customer(Long id, String fullName, String email, String phone, BigDecimal balance, String address, Boolean deleted) {
         this.id = id;
         this.fullName = fullName;
         this.email = email;
         this.phone = phone;
-        this.amount = amount;
+        this.balance = balance;
         this.address = address;
         this.deleted = deleted;
     }
@@ -74,12 +74,12 @@ public class Customer {
         this.phone = phone;
     }
 
-    public BigDecimal getAmount() {
-        return amount;
+    public BigDecimal getBalance() {
+        return balance;
     }
 
-    public void setAmount(BigDecimal amount) {
-        this.amount = amount;
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     public String getAddress() {

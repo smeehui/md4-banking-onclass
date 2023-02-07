@@ -1,0 +1,44 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:fragment="nav-bar">
+  <header class="header">
+    <nav class="navbar bg-primary navbar-expand-lg">
+      <div class="container-fluid">
+        <a class="navbar-brand text-white fw-bold">Create customer</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="customerDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                Customer
+              </a>
+              <ul class="dropdown-menu  text-white" aria-labelledby="customerDropdown">
+                <li><a class="dropdown-item" href="/customers">All customers</a></li>
+                <li><a class="dropdown-item" href="/customers/create">New customer</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="depositDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                Deposit
+              </a>
+              <ul class="dropdown-menu  text-white" aria-labelledby="depositDropdown">
+                <li><a class="dropdown-item" href="/deposits">Deposit history</a></li>
+                <li><a class="dropdown-item" href="/deposits/create">New deposit</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+        <div class="d-flex">
+          <a href="/customers">
+            <button class="btn btn-light">List of customers</button>
+          </a>
+        </div>
+      </div>
+    </nav>
+  </header>
+</th:block>
+</html>

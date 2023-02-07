@@ -13,7 +13,7 @@ public class Deposit {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customerId;
+    private Customer customer;
 
     @Column(name = "transaction_amount", precision = 10, scale = 0, nullable = false)
     private BigDecimal transactionAmount;
@@ -30,9 +30,9 @@ public class Deposit {
     public Deposit() {
     }
 
-    public Deposit(Long id, Customer customerId, BigDecimal transactionAmount, Date createdAt, String createdBy, Boolean deleted) {
+    public Deposit(Long id, Customer customer, BigDecimal transactionAmount, Date createdAt, String createdBy, Boolean deleted) {
         this.id = id;
-        this.customerId = customerId;
+        this.customer = customer;
         this.transactionAmount = transactionAmount;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
@@ -47,12 +47,12 @@ public class Deposit {
         this.id = id;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public BigDecimal getTransactionAmount() {

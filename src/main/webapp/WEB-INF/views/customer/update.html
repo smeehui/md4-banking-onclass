@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home</title>
+    <link rel="stylesheet" href="/assets/bootstrap/v5.0.2/css/bootstrap.min.css"/>
+</head>
+<body>
+<th:block th:replace="layout/header_nav::nav-bar"/>
+<div class="content">
+    <div class="container">
+        <form th:if="${error != true}" method="post" th:object="${customer}">
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <label class="form-label">Full name</label>
+                    <input type="text" class="form-control" th:field="*{fullName}"/>
+                </div>
+                <div class="col-lg-6">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" th:field="*{email}"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="mb-3 col-lg-6">
+                    <label class="form-label">Phone</label>
+                    <input type="tel" class="form-control" th:field="*{phone}"/>
+                </div>
+                <div class="mb-3 col-lg-6">
+                    <label class="form-label">Address</label>
+                    <input type="text" class="form-control" th:field="*{address}"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="mb-3 col-lg-6">
+                    <label class="form-label">Balance</label>
+                    <input type="tel" class="form-control" th:field="*{balance}"/>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="mb-3 col-lg-3">
+                    <button type="submit" class="btn btn-outline-secondary">Update</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+<th:block th:replace="layout/script::bootstrap"/>
+</html>
