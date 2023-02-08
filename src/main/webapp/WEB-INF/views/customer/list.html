@@ -8,7 +8,7 @@
 <body>
 <th:block th:replace="layout/header_nav::nav-bar('Customer list')"/>
 <div class="content">
-    <div class="container">
+    <div class="container-fluid">
         <table class="table table-hover">
             <thead>
             <tr>
@@ -31,19 +31,30 @@
                     <td class="text-end" th:text="${item.balance} +'$'"></td>
                     <td th:text="${item.address}"></td>
                     <td>
-                        <a th:href="@{/customers/update/__${item.id}__}">
-                            <button class="btn btn-outline-secondary">
-                                Edit
-                            </button>
-                        </a>
-                        <a th:href="@{/customers/delete/__${item.id}__}"
-                           th:onclick="return confirm(this.dataset.confirm)"
-                           th:data-confirm = "'Are you sure want to delete ' + ${item.fullName}+'?'"
-                        >
-                            <button class="btn btn-outline-warning text-warning">
-                                Delete
-                            </button>
-                        </a>
+                        <div class="btn-group">
+                            <a th:href="@{/customers/update/__${item.id}__}">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    Edit
+                                </button>
+                            </a>
+                            <a th:href="@{/customers/deposit/__${item.id}__}">
+                                <button class="btn btn-sm btn-outline-success">
+                                    Deposit
+                                </button>
+                            </a>
+                            <a th:href="@{/customers/withdraw/__${item.id}__}">
+                                <button class="btn btn-sm btn-outline-secondary">
+                                    Withdraw
+                                </button>
+                            </a>
+                            <a th:href="@{/customers/delete/__${item.id}__}"
+                               th:onclick="return confirm(this.dataset.confirm)"
+                               th:data-confirm="'Are you sure want to delete ' + ${item.fullName}+'?'">
+                                <button class="btn btn-sm btn-outline-warning">
+                                    Delete
+                                </button>
+                            </a>
+                        </div>
                     </td>
                 </tr>
             </th:block>
@@ -52,9 +63,6 @@
     </div>
 </div>
 
-<footer class="footer bg-danger text-white">
-
-</footer>
 </body>
 <th:block th:replace="layout/script::bootstrap"/>
 </html>

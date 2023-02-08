@@ -6,34 +6,43 @@
     <link rel="stylesheet" href="/assets/bootstrap/v5.0.2/css/bootstrap.min.css"/>
 </head>
 <body>
-<th:block th:replace="layout/header_nav::nav-bar('Create new withdraw')"/>
+<th:block th:replace="layout/header_nav::nav-bar('Withdraw')"/>
 <div class="content">
     <div class="container">
         <form class="" method="post" th:object="${withdraw}">
             <div class="row mb-3">
                 <div class="col-lg-6">
-                    <label for="customer" class="form-label">Customer</label>
-                    <select class="form-control" id="customer" name="customer.id" >
-                        <option value="-1">--Select customer--</option>
-                        <option th:each="customer:${customers}" th:value="${customer.id}"
-                                th:selected="(${withdraw.customer}) and ${withdraw.customer.id==customer.id}"
-                                th:text="${customer.fullName} + '(Balance: ' + ${customer.balance}+'$)'"></option>
-                    </select>
+                    <label for="customerName" class="form-label">Full name</label>
+                    <input type="Text" readonly class="form-control" id="customerName"
+                           th:value="*{customer.fullName}"/>
                 </div>
                 <div class="col-lg-6">
-                    <label for="amount" class="form-label">Withdraw amount</label>
-                    <input type="number" required min="50" max="50000" class="form-control" id="amount" th:field="*{transactionAmount}"/>
+                    <label for="customerBalance" class="form-label">Balance</label>
+                    <input type="text" readonly class="form-control" id="customerBalance"
+                           th:value="*{customer.balance}"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-lg-6">
+                    <label for="customerEmail" class="form-label">Email</label>
+                    <input type="text" readonly class="form-control" id="customerEmail" th:value="*{customer.email}"/>
+                </div>
+                <div class="col-lg-6">
+                    <label for="amount" class="form-label">Withdraw mount</label>
+                    <input type="number" required min="10" max="1000000" class="form-control" id="amount"
+                           th:field="*{transactionAmount}"/>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="mb-3 col-lg-3">
-                    <button type="submit" class="btn btn-outline-primary">Create</button>
+                    <button type="submit" class="btn btn-outline-success">Deposit</button>
                 </div>
             </div>
         </form>
     </div>
 </div>
-<th:block th:replace="layout/footer::footer"/>
+
+<th:block th:replace="layout/footer::footer('withdraw')"/>
 </body>
 <th:block th:replace="layout/script::bootstrap"/>
 </html>

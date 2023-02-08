@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Controller
@@ -29,23 +29,29 @@ public class DepositController {
         model.addAttribute("deposits", depositService.findAll());
         return "deposit/list";
     }
+    @GetMapping("/create")
+    public String showCreateDepositPage(Model model) {
+
+        model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
+        model.addAttribute("deposit", new Deposit());
+
+        return "deposit/create_manual";
+    }
     @PostMapping("/create")
     public String doCreate(@ModelAttribute Deposit deposit, Model model) {
 
-        deposit.setCreatedAt(new Date());
-        deposit.setCreatedBy("admin");
-
         Optional<Customer> customerOpt = customerService.findById(deposit.getCustomer().getId());
-       if (customerOpt.isPresent()) {
-           Customer customer = customerOpt.get();
-           customer.setBalance(customer.getBalance().add(deposit.getTransactionAmount()));
-           model.addAttribute("success", "New deposit created successfully!");
-           customerService.save(customer);
-           depositService.save(deposit);
-       }else {
+        if (customerOpt.isPresent()) {
+
+            Customer customer = customerOpt.get();
+            deposit = customerService.depositToCustomerBalance(customer.getId(), deposit);
+            customer.setBalance(customer.getBalance().add(deposit.getTransactionAmount()));
+            deposit.setTransactionAmount(BigDecimal.ZERO);
+
+        } else {
            model.addAttribute("error", true);
        }
         model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
-        return "deposit/create";
+        return "deposit/create_manual";
     }
 }

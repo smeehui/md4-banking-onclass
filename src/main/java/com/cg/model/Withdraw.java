@@ -12,7 +12,7 @@ public class Withdraw {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false,)
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
     private Customer customer;
 
     @Column(name = "transaction_amount", precision = 10, scale = 0, nullable = false)

@@ -1,12 +1,19 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<th:block th:fragment="footer">
-  <footer th:if="${error != null}"
+<th:block th:fragment="footer(type)">
+  <footer th:if="${error!=false}  or  ${#fields.hasErrors('*.*')}"
           class="footer text-white position-fixed bg-danger"
           style="bottom: 0;left: 0;right: 0">
-    <ul class="container mb-0" th:if="${error == true}">
-      <li class="m-3">Customer not found!</li>
+    <ul class="container mb-0">
+      <li class="my-1" th:if="(${error == true})">Customer not found!</li>
+
+      <th:block th:switch="${type}">
+        <th:block th:case="'customer'">
+          <div th:replace="layout/fragments/errors/customer::customer"></div>
+        </th:block>
+      </th:block>
+
     </ul>
-    <ul class="container mb-0" th:if="${error != true}">
+    <ul class="container mb-0" th:if="${error != true} and ${error!=null}">
       <li class="m-3" th:text="${error}"></li>
     </ul>
   </footer>
