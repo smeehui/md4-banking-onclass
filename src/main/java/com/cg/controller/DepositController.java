@@ -26,14 +26,8 @@ public class DepositController {
 
     @GetMapping
     public String showDepositsPage(Model model) {
+        model.addAttribute("deposits", depositService.findAll());
         return "deposit/list";
-    }
-
-    @GetMapping("/create")
-    public String showCreateDepositsForm(Model model) {
-        model.addAttribute("deposit", new Deposit());
-        model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
-        return "deposit/create";
     }
     @PostMapping("/create")
     public String doCreate(@ModelAttribute Deposit deposit, Model model) {
@@ -51,6 +45,7 @@ public class DepositController {
        }else {
            model.addAttribute("error", true);
        }
+        model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
         return "deposit/create";
     }
 }

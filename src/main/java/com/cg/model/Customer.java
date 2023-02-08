@@ -14,8 +14,8 @@ public class Customer {
     private String email;
     private String phone;
 
-    @Column(precision = 10, columnDefinition ="DECIMAL DEFAULT 0")
-    private BigDecimal balance = BigDecimal.ZERO;
+    @Column(precision = 10, columnDefinition ="DECIMAL DEFAULT 0",nullable = false,updatable = false)
+    private BigDecimal balance;
     private String address;
 
     @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")

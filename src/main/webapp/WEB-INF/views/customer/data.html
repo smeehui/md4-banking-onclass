@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/assets/bootstrap/v5.0.2/css/bootstrap.min.css"/>
 </head>
 <body>
-<th:block th:replace="layout/header_nav::nav-bar('Customer list')"/>
+<th:block th:replace="layout/header_nav::nav-bar('Customer data')"/>
 <div class="content">
     <div class="container">
         <table class="table table-hover">
@@ -28,7 +28,7 @@
                     <td th:text="${item.fullName}"></td>
                     <td th:text="${item.email}"></td>
                     <td th:text="${item.phone}"></td>
-                    <td class="text-end" th:text="${item.balance} +'$'"></td>
+                    <td class="text-end" th:text="${item.balance}"></td>
                     <td th:text="${item.address}"></td>
                     <td>
                         <a th:href="@{/customers/update/__${item.id}__}">
@@ -49,6 +49,17 @@
             </th:block>
             </tbody>
         </table>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-end">
+                <li class="page-item" th:if="${customers.hasPrevious()}">
+                    <a class="page-link"  th:href="@{'/customers/data'(page=${customers.number - 1},size=5)}" tabindex="-1">Previous</a>
+                </li>
+                <li class="page-item" th:text="${customers.number + 1}+'/'+${customers.totalPages}"></li>
+                <li class="page-item" th:if="${customers.hasNext()}">
+                    <a class="page-link" th:href="@{'/customers/data'(page=${customers.number + 1},size=5)}">Next</a>
+                </li>
+            </ul>
+        </nav>
     </div>
 </div>
 

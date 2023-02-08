@@ -1,10 +1,13 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <th:block th:fragment="footer">
-  <footer th:if="${error == true}"
+  <footer th:if="${error != null}"
           class="footer text-white position-fixed bg-danger"
           style="bottom: 0;left: 0;right: 0">
     <ul class="container mb-0" th:if="${error == true}">
       <li class="m-3">Customer not found!</li>
+    </ul>
+    <ul class="container mb-0" th:if="${error != true}">
+      <li class="m-3" th:text="${error}"></li>
     </ul>
   </footer>
   <footer th:if="${success != null}"

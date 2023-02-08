@@ -1,0 +1,51 @@
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<th:block th:fragment="customer">
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Full name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Balance</th>
+            <th>Address</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <th:block th:each="item : ${customers}">
+            <tr>
+                <td th:text="${item.id}"></td>
+                <td th:text="${item.fullName}"></td>
+                <td th:text="${item.email}"></td>
+                <td th:text="${item.phone}"></td>
+                <td th:text="${item.balance}"></td>
+                <td th:text="${item.address}"></td>
+                <td>
+                    <a th:href="@{/customers/update/__${item.id}__}">
+                        <button class="btn btn-outline-secondary">
+                            Edit
+                        </button>
+                    </a>
+                </td>
+            </tr>
+        </th:block>
+        </tbody>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item">
+                    <a th:href="@{'/customers'(page=${customers.number - 1})}" th:if="${customers.hasPrevious()}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item">
+                    <a th:href="@{'/customers'(page=${customers.number + 1})}" th:if="${customers.hasNext()}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </table>
+</th:block>
+</html>

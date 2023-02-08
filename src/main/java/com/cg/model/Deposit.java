@@ -25,7 +25,7 @@ public class Deposit {
     private String createdBy;
 
     @Column(columnDefinition = "bit default false")
-    private Boolean deleted;
+    private Boolean deleted = false;
 
     public Deposit() {
     }
@@ -36,6 +36,14 @@ public class Deposit {
         this.transactionAmount = transactionAmount;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
+        this.deleted = deleted;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
         this.deleted = deleted;
     }
 

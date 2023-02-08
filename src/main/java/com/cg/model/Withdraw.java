@@ -12,8 +12,8 @@ public class Withdraw {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false)
-    private Customer customerId;
+    @JoinColumn(name = "customer_id", referencedColumnName = "id", nullable = false,)
+    private Customer customer;
 
     @Column(name = "transaction_amount", precision = 10, scale = 0, nullable = false)
     private BigDecimal transactionAmount;
@@ -24,7 +24,7 @@ public class Withdraw {
     @Column(name = "created_by")
     private String createdBy;
     @Column(nullable = false)
-    private Boolean deleted;
+    private Boolean deleted = false;
 
 
     public Withdraw() {
@@ -38,9 +38,9 @@ public class Withdraw {
         this.deleted = deleted;
     }
 
-    public Withdraw(Long id, Customer customerId, BigDecimal transactionAmount, Date createdAt, String createdBy, Boolean deleted) {
+    public Withdraw(Long id, Customer customer, BigDecimal transactionAmount, Date createdAt, String createdBy, Boolean deleted) {
         this.id = id;
-        this.customerId = customerId;
+        this.customer = customer;
         this.transactionAmount = transactionAmount;
         this.createdAt = createdAt;
         this.createdBy = createdBy;
@@ -55,12 +55,12 @@ public class Withdraw {
         this.id = id;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customerId) {
+        this.customer = customerId;
     }
 
     public BigDecimal getTransactionAmount() {

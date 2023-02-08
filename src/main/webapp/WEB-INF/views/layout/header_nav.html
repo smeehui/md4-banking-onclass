@@ -1,12 +1,17 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
-<th:block th:fragment="nav-bar">
+<th:block th:fragment="nav-bar(title)">
   <header class="header">
     <nav class="navbar bg-primary navbar-expand-lg">
       <div class="container-fluid">
-        <a class="navbar-brand text-white fw-bold">Create customer</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        <a class="navbar-brand text-white fw-bold" th:text="${title}"></a>
+        <button class="navbar-toggler border-light bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
+          <span class="navbar-toggler-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-circle" viewBox="0 0 16 16">
+                  <path fill-rule="evenodd"
+                        d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8zm15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8.5 4.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z"/>
+              </svg>
+          </span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -18,6 +23,7 @@
               <ul class="dropdown-menu  text-white" aria-labelledby="customerDropdown">
                 <li><a class="dropdown-item" href="/customers">All customers</a></li>
                 <li><a class="dropdown-item" href="/customers/create">New customer</a></li>
+                <li><a class="dropdown-item" href="/customers/data?size=5">Customer data</a></li>
               </ul>
             </li>
             <li class="nav-item dropdown">
@@ -28,6 +34,16 @@
               <ul class="dropdown-menu  text-white" aria-labelledby="depositDropdown">
                 <li><a class="dropdown-item" href="/deposits">Deposit history</a></li>
                 <li><a class="dropdown-item" href="/deposits/create">New deposit</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle text-white" href="#" id="withdrawDropdown" role="button" data-bs-toggle="dropdown"
+                 aria-expanded="false">
+                Withdraw
+              </a>
+              <ul class="dropdown-menu  text-white" aria-labelledby="withdrawDropdown">
+                <li><a class="dropdown-item" href="/withdraws">Withdraw history</a></li>
+                <li><a class="dropdown-item" href="/withdraws/create">New withdraw</a></li>
               </ul>
             </li>
           </ul>

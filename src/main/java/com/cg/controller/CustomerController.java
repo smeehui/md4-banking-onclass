@@ -1,8 +1,11 @@
 package com.cg.controller;
 
 import com.cg.model.Customer;
+import com.cg.model.Deposit;
 import com.cg.service.customer.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.support.QuerydslJpaRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,12 +52,52 @@ public class CustomerController {
         return "customer/update";
     }
 
+    @GetMapping("/data")
+    public String showCustomerData(@RequestParam Optional<String> search, Model model, Pageable pageable) {
+        if (search.isPresent()) {
+            String q = search.get();
+            model.addAttribute("customers", customerService.search(pageable, q));
+
+        }else  model.addAttribute("customers",customerService.findCustomerByDeletedIsFalse(pageable));
+
+        return "customer/data";
+    }
+
+    @GetMapping("/delete/{id}")
+    public String deleteCustomer(@PathVariable Long id, Model model) {
+
+        Optional<Customer> customerOptional = customerService.findById(id);
+
+        if (!customerOptional.isPresent()) {
+
+            model.addAttribute("error", true);
+        }
+        else {
+
+            Customer customer = customerOptional.get();
+            customer.setDeleted(true);
+            customerService.save(customer);
+            model.addAttribute("success", "Customer " + customer.getFullName() + " is deleted successfully");
+        }
+
+        return "redirect:/customers";
+    }
+
     @PostMapping("/create")
     public String doCreate(@ModelAttribute Customer customer, Model model) {
 
         customerService.save(customer);
         model.addAttribute("success", "New customer created successfully!");
         return "customer/create";
+    }
+    @GetMapping("/deposit/{id}")
+    public String showCreateDepositsForm(@PathVariable Long id, Model model) {
+
+        model.addAttribute("deposit", new Deposit());
+
+
+
+        return "deposit/create";
     }
 
     @PostMapping("/update/{id}")
@@ -67,9 +110,10 @@ public class CustomerController {
         }
         else {
             customer.setId(id);
+            customer.setBalance(customerOptional.get().getBalance());
             customerService.save(customer);
 
-            model.addAttribute("success", "Customẻ updated successfully!");
+            model.addAttribute("success", "Customer updated successfully!");
             model.addAttribute("customer", customer);
         }
 

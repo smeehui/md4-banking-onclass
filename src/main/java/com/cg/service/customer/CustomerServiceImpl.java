@@ -3,6 +3,8 @@ package com.cg.service.customer;
 import com.cg.model.Customer;
 import com.cg.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,5 +43,15 @@ public class CustomerServiceImpl implements ICustomerService{
     @Override
     public List<Customer> findCustomerByDeletedIsFalse() {
         return customerRepository.findCustomerByDeletedIsFalse();
+    }
+
+    @Override
+    public Page<Customer> findCustomerByDeletedIsFalse(Pageable pageable) {
+        return customerRepository.findCustomerByDeletedIsFalse(pageable);
+    }
+
+    @Override
+    public Page<Customer> search(Pageable pageable, String keyword) {
+        return customerRepository.search(pageable, keyword);
     }
 }

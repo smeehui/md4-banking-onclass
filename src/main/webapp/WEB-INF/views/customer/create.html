@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/assets/bootstrap/v5.0.2/css/bootstrap.min.css"/>
 </head>
 <body>
-<th:block th:replace="layout/header_nav::nav-bar"/>
+<th:block th:replace="layout/header_nav::nav-bar('Create customer')"/>
 <div class="content">
     <div class="container">
         <form class="" method="post" th:object="${customer}">

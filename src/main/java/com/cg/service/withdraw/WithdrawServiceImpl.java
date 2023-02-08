@@ -15,17 +15,17 @@ public class WithdrawServiceImpl implements IWithdrawService {
 
     @Override
     public List<Withdraw> findAll() {
-        return null;
+        return withdrawRepository.findAll();
     }
 
     @Override
     public Optional<Withdraw> findById(Long id) {
-        return Optional.empty();
+        return withdrawRepository.findById(id);
     }
 
     @Override
     public Withdraw save(Withdraw withdraw) {
-        return null;
+        return withdrawRepository.save(withdraw);
     }
 
     @Override
