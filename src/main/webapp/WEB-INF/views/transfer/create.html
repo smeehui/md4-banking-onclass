@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create customer</title>
+    <link rel="stylesheet" href="/assets/bootstrap/v5.0.2/css/bootstrap.min.css"/>
+</head>
+<body>
+<th:block th:replace="layout/header_nav::nav-bar('Transfer')"/>
+<div class="content">
+    <div class="container">
+        <form class="" method="post" th:object="${transferDTO}">
+            <div class="row mb-3">
+                <div class="col-lg-3">
+                    <label for="customerName" class="form-label">Full name</label>
+                    <input type="Text" readonly class="form-control" id="customerName"
+                           th:value="*{sender.fullName}"/>
+                </div>
+                <div class="col-lg-3">
+                    <label for="customerBalance" class="form-label">Balance</label>
+                    <input type="text" readonly class="form-control" id="customerBalance"
+                           th:value="*{sender.balance}"/>
+                </div>
+                <div class="col-lg-3">
+                    <label for="customerEmail" class="form-label">Email</label>
+                    <input type="Text" readonly class="form-control" id="customerEmail"
+                           th:value="*{sender.email}"/>
+                </div>
+                <div class="col-lg-3">
+                    <label for="customerPhone" class="form-label">Balance</label>
+                    <input type="text" readonly class="form-control" id="customerPhone"
+                           th:value="*{sender.phone}"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-lg-3">
+                    <label for="recipientName" class="form-label">Full name</label>
+                    <select type="Text" class="form-select" id="recipientName" name="recipient.id">
+                        <option th:each="item:${recipients}"
+                                th:value="${item.id}"
+                                th:text="${'(' + item.id + ') ' + item.fullName }"></option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="transferAmount" class="form-label">Amount</label>
+                    <input type="text" class="form-control" id="transferAmount" th:field="*{transferAmount}"
+                           th:value="*{transferAmount}"/>
+                </div>
+                <div class="col-lg-3">
+                    <label for="fees" class="form-label">Fees</label>
+                    <select class="form-select col-lg-2" id="fees" th:field="*{fees}">
+                        <option type="text" class="form-control" th:value="10" th:text="'10(%)'"></option>
+                        <option type="text" class="form-control" th:value="15" th:text="'15(%)'"></option>
+                        <option type="text" class="form-control" th:value="20" th:text="'20(%)'"></option>
+                    </select>
+                </div>
+                <div class="col-lg-3">
+                    <label for="transactionAmount" class="form-label">Total</label>
+                    <input type="text" class="form-control" id="transactionAmount" readonly
+                           th:text="*{transactionAmount}"/>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="mb-3 col-lg-3">
+                    <button type="submit" class="btn btn-outline-success">Transfer</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<th:block th:replace="layout/footer::footer('transfer')"/>
+<script>
+    function calculateTransactionAmount(e){
+        let transferAmount = +document.getElementById('transferAmount').value;
+        let fees = +document.getElementById("fees").value;
+        let feesAmount = transferAmount * fees / 100;
+        let transactionAmount = transferAmount + feesAmount;
+        document.getElementById('transactionAmount').value = transactionAmount;
+    }
+    document.getElementById('transferAmount').addEventListener('input', calculateTransactionAmount)
+    document.getElementById("fees").addEventListener('input',calculateTransactionAmount)
+</script>
+</body>
+<th:block th:replace="layout/script::bootstrap"/>
+</html>

@@ -28,4 +28,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Modifying
     @Query("UPDATE Customer c SET c.balance = c.balance - :amount WHERE c.id = :customerID")
     public void withdrawFromCustomerBalance(@Param("customerID") Long customerId,@Param("amount") BigDecimal amount);
+
+    public List<Customer> findAllByIdNotAndDeletedIsFalse(Long senderId);
 }

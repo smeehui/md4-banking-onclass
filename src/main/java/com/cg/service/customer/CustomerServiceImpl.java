@@ -2,9 +2,11 @@ package com.cg.service.customer;
 
 import com.cg.model.Customer;
 import com.cg.model.Deposit;
+import com.cg.model.Transfer;
 import com.cg.model.Withdraw;
 import com.cg.repository.CustomerRepository;
 import com.cg.repository.DepositRepository;
+import com.cg.repository.TransferRepository;
 import com.cg.repository.WithdrawRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,6 +30,9 @@ public class CustomerServiceImpl implements ICustomerService{
 
     @Autowired
     WithdrawRepository withdrawRepository;
+
+    @Autowired
+    TransferRepository transferRepository;
 
     @Override
     public List<Customer> findAll() {
@@ -72,14 +77,39 @@ public class CustomerServiceImpl implements ICustomerService{
     @Override
     public Deposit depositToCustomerBalance(Long id, Deposit deposit) {
 
-        deposit.setCreatedAt(new Date());
-        deposit.setCreatedBy("admin");
-
         deposit = depositRepository.save(deposit);
 
-        customerRepository.addDepositAmountToCustomer(id, deposit.getTransactionAmount());
+        BigDecimal oldBalance = deposit.getCustomer().getBalance();
+        BigDecimal transactionAmount = deposit.getTransactionAmount();
+
+        customerRepository.addDepositAmountToCustomer(id, transactionAmount);
+
+        deposit.getCustomer().setBalance(oldBalance.add(transactionAmount));
 
         return deposit;
+    }
+
+    @Override
+    public List<Customer> findAllByIdNotAndDeletedIsFalse(Long senderId) {
+        return customerRepository.findAllByIdNotAndDeletedIsFalse(senderId);
+    }
+
+    @Override
+    public Transfer transfer(Transfer transfer) {
+        BigDecimal transferAmount = transfer.getTransferAmount();
+        BigDecimal transactionAmount = transfer.getTransactionAmount();
+
+        customerRepository.withdrawFromCustomerBalance(transfer.getSender().getId(), transactionAmount);
+
+        customerRepository.addDepositAmountToCustomer(transfer.getRecipient().getId(), transferAmount);
+
+        transferRepository.save(transfer);
+
+        Customer sender = customerRepository.findById(transfer.getSender().getId()).get();
+
+        transfer.setSender(sender);
+
+        return transfer;
     }
 
     @Override

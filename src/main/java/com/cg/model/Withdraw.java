@@ -1,12 +1,16 @@
 package com.cg.model;
 
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Entity
 @Table(name = "withdraws")
-public class Withdraw {
+public class Withdraw implements Validator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -16,6 +20,7 @@ public class Withdraw {
     private Customer customer;
 
     @Column(name = "transaction_amount", precision = 10, scale = 0, nullable = false)
+    @NotNull(message = "Withdraw amount is empty")
     private BigDecimal transactionAmount;
 
     @Column(name = "created_at", nullable = false)
@@ -85,5 +90,24 @@ public class Withdraw {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return Withdraw.class.isAssignableFrom(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+
+        Withdraw withdraw = (Withdraw) target;
+
+        BigDecimal transactionAmount = withdraw.getTransactionAmount();
+        if (String.valueOf(withdraw.getTransactionAmount()).length() < 2) {
+            errors.rejectValue("transactionAmount","withdraw.minAmount");
+        }else  if (transactionAmount.compareTo(BigDecimal.valueOf(10)) < 0 || transactionAmount.compareTo(BigDecimal.valueOf(500000)) > 0) {
+            errors.rejectValue("transactionAmount","withdraw.amountRange");
+        }
+
     }
 }

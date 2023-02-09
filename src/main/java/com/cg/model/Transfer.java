@@ -1,21 +1,23 @@
 package com.cg.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.Date;
 
 @Entity
 @Table(name ="transfers")
-public class Transfer {
+public class Transfer extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @JoinColumn(name = "sender_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "Sender is required")
     private Customer sender;
     @ManyToOne
     @JoinColumn(name = "recipient_id", referencedColumnName = "id", nullable = false)
+    @NotNull(message = "Recipient is required")
     private Customer recipient;
 
     @Column(name = "transfer_amount", precision = 10, scale = 0, nullable = false)
@@ -30,27 +32,11 @@ public class Transfer {
     @Column(name = "transaction_amount", precision = 10, scale = 0, nullable = false)
     private BigDecimal transactionAmount;
 
-    @Column(name = "created_at", nullable = false)
-    private Date createdAt;
-
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(nullable = false)
-    private Boolean deleted;
-
     public Transfer() {
     }
 
-    public Boolean getDeleted() {
-        return deleted;
-    }
 
-    public void setDeleted(Boolean deleted) {
-        this.deleted = deleted;
-    }
-
-    public Transfer(Long id, Customer sender, Customer recipient, BigDecimal transferAmount, Long fees, BigDecimal feesAmount, BigDecimal transactionAmount, Date createdAt, String createdBy, Boolean deleted) {
+    public Transfer(Long id, Customer sender, Customer recipient, BigDecimal transferAmount, Long fees, BigDecimal feesAmount, BigDecimal transactionAmount) {
         this.id = id;
         this.sender = sender;
         this.recipient = recipient;
@@ -58,9 +44,6 @@ public class Transfer {
         this.fees = fees;
         this.feesAmount = feesAmount;
         this.transactionAmount = transactionAmount;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
-        this.deleted = deleted;
     }
 
     public Long getId() {
@@ -117,33 +100,5 @@ public class Transfer {
 
     public void setTransactionAmount(BigDecimal transactionAmount) {
         this.transactionAmount = transactionAmount;
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-    }
-
-    public Transfer(Long id, Customer sender, Customer recipient, BigDecimal transferAmount, Long fees, BigDecimal feesAmount, BigDecimal transactionAmount, Date createdAt, String createdBy) {
-        this.id = id;
-        this.sender = sender;
-        this.recipient = recipient;
-        this.transferAmount = transferAmount;
-        this.fees = fees;
-        this.feesAmount = feesAmount;
-        this.transactionAmount = transactionAmount;
-        this.createdAt = createdAt;
-        this.createdBy = createdBy;
     }
 }

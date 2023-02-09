@@ -10,6 +10,15 @@
         <th:block th:case="'customer'">
           <div th:replace="layout/fragments/errors/customer::customer"></div>
         </th:block>
+        <th:block th:case="'deposit'">
+          <div th:replace="layout/fragments/errors/deposit::deposit"></div>
+        </th:block>
+        <th:block th:case="'withdraw'">
+          <div th:replace="layout/fragments/errors/withdraw::withdraw"></div>
+        </th:block>
+        <th:block th:case="'transfer'">
+          <div th:replace="layout/fragments/errors/transfer::transfer"></div>
+        </th:block>
       </th:block>
 
     </ul>

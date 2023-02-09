@@ -10,7 +10,7 @@
 <th:block th:if="${error!=true}">
     <div class="content">
         <div class="container">
-            <form class="" method="post" th:object="${deposit}">
+            <form class="" method="post" th:object="${depositRequestDTO}">
                 <div class="row mb-3">
                     <div class="col-lg-6">
                         <label for="customerName" class="form-label">Full name</label>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-lg-6">
                         <label for="amount" class="form-label">Deposit mount</label>
-                        <input type="number" required min="10" max="1000000" class="form-control" id="amount"
+                        <input type="number" class="form-control" id="amount"
                                th:field="*{transactionAmount}"/>
                     </div>
                 </div>
