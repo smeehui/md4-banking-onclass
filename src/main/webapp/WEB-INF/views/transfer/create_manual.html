@@ -11,42 +11,34 @@
     <div class="container">
         <form class="" method="post" th:object="${transferRequestDTO}">
             <div class="row mb-3">
-                <div class="col-lg-3">
-                    <label for="customerName" class="form-label">Full name</label>
-                    <input type="Text" readonly class="form-control" id="customerName"
-                           th:value="*{sender.fullName}"/>
-                </div>
-                <div class="col-lg-3">
-                    <label for="customerBalance" class="form-label">Balance</label>
-                    <input type="text" readonly class="form-control" id="customerBalance"
-                           th:value="*{sender.balance}"/>
-                </div>
-                <div class="col-lg-3">
-                    <label for="customerEmail" class="form-label">Email</label>
-                    <input type="Text" readonly class="form-control" id="customerEmail"
-                           th:value="*{sender.email}"/>
-                </div>
-                <div class="col-lg-3">
-                    <label for="customerPhone" class="form-label">Balance</label>
-                    <input type="text" readonly class="form-control" id="customerPhone"
-                           th:value="*{sender.phone}"/>
-                </div>
-            </div>
-            <div class="row mb-3">
-                <div class="col-lg-3">
-                    <label for="recipientName" class="form-label">Full name</label>
-                    <select type="Text" class="form-select" id="recipientName" name="recipient.id">
-                        <option th:each="item:${recipients}"
+                <div class="col-lg-6">
+                    <label for="senderName" class="form-label">Sender</label>
+                    <select type="Text" class="form-select" id="senderName" name="sender.id">
+                        <option value="-1">---Select sender---</option>
+                        <option th:each="item:${customers}"
                                 th:value="${item.id}"
+                                th:selected="(${transferRequestDTO.sender}) and ${transferRequestDTO.sender.fullName != null} and ${transferRequestDTO.sender.id==item.id}"
+                                th:text="${'(' + item.id + ') ' + item.fullName + ' - Balance: ' + item.balance}"></option>
+                    </select>
+                </div>
+                <div class="col-lg-6">
+                    <label for="recipientName" class="form-label">Recipient</label>
+                    <select type="Text" class="form-select" id="recipientName" name="recipient.id">
+                        <option value="-1">---Select recipient---</option>
+                        <option th:each="item:${customers}"
+                                th:value="${item.id}"
+                                th:selected="(${transferRequestDTO.recipient}) and ${transferRequestDTO.recipient.fullName !=null } and ${transferRequestDTO.recipient.id==item.id}"
                                 th:text="${'(' + item.id + ') ' + item.fullName }"></option>
                     </select>
                 </div>
-                <div class="col-lg-3">
+            </div>
+            <div class="row mb-3">
+                <div class="col-lg-4">
                     <label for="transferAmount" class="form-label">Amount</label>
                     <input type="text" class="form-control" id="transferAmount" th:field="*{transferAmount}"
                            th:value="*{transferAmount}"/>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="fees" class="form-label">Fees</label>
                     <select class="form-select col-lg-2" id="fees" th:field="*{fees}">
                         <option type="text" class="form-control" th:value="10" th:text="'10(%)'"></option>
@@ -54,7 +46,7 @@
                         <option type="text" class="form-control" th:value="20" th:text="'20(%)'"></option>
                     </select>
                 </div>
-                <div class="col-lg-3">
+                <div class="col-lg-4">
                     <label for="transactionAmount" class="form-label">Total</label>
                     <input type="text" class="form-control" id="transactionAmount" readonly
                            th:text="*{transactionAmount}"/>

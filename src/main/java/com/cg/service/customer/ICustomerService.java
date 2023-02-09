@@ -8,7 +8,6 @@ import com.cg.service.IGeneralService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public interface ICustomerService extends IGeneralService<Customer> {

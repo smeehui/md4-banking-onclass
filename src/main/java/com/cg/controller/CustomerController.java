@@ -6,13 +6,13 @@ import com.cg.model.Transfer;
 import com.cg.model.Withdraw;
 import com.cg.model.dto.DepositRequestDTO;
 import com.cg.model.dto.TransferRequestDTO;
+import com.cg.model.dto.WithdrawRequestDTO;
 import com.cg.service.customer.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -108,13 +108,13 @@ public class CustomerController {
     @GetMapping("/withdraw/{id}")
     public String showCreateWithdrawForm(@PathVariable Long id, Model model) {
 
-        Withdraw withdraw = new Withdraw();
-        model.addAttribute("withdraw", withdraw);
+        WithdrawRequestDTO withdrawRequestDTO = new WithdrawRequestDTO();
+        model.addAttribute("withdrawRequestDTO", withdrawRequestDTO);
 
         Optional<Customer> customerOptional = customerService.findById(id);
 
         if (customerOptional.isPresent()) {
-            withdraw.setCustomer(customerOptional.get());
+            withdrawRequestDTO.setCustomer(customerOptional.get());
         } else {
             model.addAttribute("error", true);
         }
@@ -136,7 +136,7 @@ public class CustomerController {
             TransferRequestDTO transferDTO = new TransferRequestDTO();
             transferDTO.setSender(sender);
 
-            model.addAttribute("transferDTO", transferDTO);
+            model.addAttribute("transferRequestDTO", transferDTO);
 
             List<Customer> recipients = customerService.findAllByIdNotAndDeletedIsFalse(senderId);
 
@@ -162,6 +162,8 @@ public class CustomerController {
 
         Optional<Customer> customerOptional = customerService.findById(id);
 
+        model.addAttribute("customer", customer);
+
         if (!customerOptional.isPresent()) {
             model.addAttribute("error", true);
         } else {
@@ -169,8 +171,7 @@ public class CustomerController {
             customer.setBalance(customerOptional.get().getBalance());
             customerService.save(customer);
 
-            model.addAttribute("success", "DepositRequestDTO updated successfully!");
-            model.addAttribute("customer", customer);
+            model.addAttribute("success", "Customer updated successfully!");
         }
 
         return "customer/update";
@@ -223,32 +224,43 @@ public class CustomerController {
     }
 
     @PostMapping("/withdraw/{customerId}")
-    public String doDeposit(@PathVariable Long customerId, @Validated @ModelAttribute Withdraw withdraw, BindingResult bindingResult, Model model) {
+    public String doDeposit(@PathVariable Long customerId, @ModelAttribute WithdrawRequestDTO withdrawRequestDTO, BindingResult bindingResult, Model model) {
 
-        Customer customer = customerService.findById(customerId).get();
-        withdraw.setCustomer(customer);
+        Optional<Customer> customerOpt = customerService.findById(customerId);
 
+
+        if (!customerOpt.isPresent()) {
+            model.addAttribute("error", true);
+            return "deposit/create";
+        }
+        Customer customer = customerOpt.get();
+        withdrawRequestDTO.setCustomer(customer);
+        new WithdrawRequestDTO().validate(withdrawRequestDTO,bindingResult);
+
+        model.addAttribute("withdrawRequestDTO", withdrawRequestDTO);
         if (!bindingResult.hasErrors()) {
 
-            new Withdraw().validate(withdraw, bindingResult);
+            Withdraw withdraw = new Withdraw();
+            withdraw.setCustomer(customer);
+            long transactionAmount = Long.parseLong(withdrawRequestDTO.getTransactionAmount());
+            withdraw.setTransactionAmount(BigDecimal.valueOf(transactionAmount));
             if (!bindingResult.hasErrors()) {
 
                 if (customer.getBalance().compareTo(withdraw.getTransactionAmount()) < 0) {
 
                     model.addAttribute("error", "DepositRequestDTO's balance is not enough");
+
                 } else {
 
                     customerService.withdrawFromCustomerBalance(customerId, withdraw);
 
-                    BigDecimal newBalance = customer.getBalance().subtract(withdraw.getTransactionAmount());
-                    customer.setBalance(newBalance);
                     withdraw.setTransactionAmount(BigDecimal.ZERO);
-                    model.addAttribute("success", "Withdraw to customer " + withdraw.getCustomer().getFullName() + " account successfully");
+
+                    model.addAttribute("success", "Withdraw from customer " + withdraw.getCustomer().getFullName() + " account successfully");
                 }
             }
 
         }
-        model.addAttribute("withdraw", withdraw);
         return "withdraw/create";
     }
     @PostMapping("/transfer/{senderId}")
@@ -320,7 +332,7 @@ public class CustomerController {
         transferRequestDTO.setTransferAmount(null);
         transferRequestDTO.setTransactionAmount(null);
 
-        model.addAttribute("transferDTO", transferRequestDTO);
+        model.addAttribute("transferRequestDTO", transferRequestDTO);
 
         model.addAttribute("success", "Transfer success");
 

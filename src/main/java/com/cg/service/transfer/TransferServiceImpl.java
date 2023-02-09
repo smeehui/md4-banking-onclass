@@ -1,9 +1,7 @@
 package com.cg.service.transfer;
 
-import com.cg.model.Deposit;
 import com.cg.model.Transfer;
 import com.cg.repository.TransferRepository;
-import com.cg.service.deposit.IDepositService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -105,9 +104,8 @@ public class CustomerServiceImpl implements ICustomerService{
 
         transferRepository.save(transfer);
 
-        Customer sender = customerRepository.findById(transfer.getSender().getId()).get();
-
-        transfer.setSender(sender);
+        transfer.getSender().setBalance(transfer.getSender().getBalance().subtract(transactionAmount));
+        transfer.getRecipient().setBalance(transfer.getRecipient().getBalance().add(transferAmount));
 
         return transfer;
     }
@@ -115,11 +113,10 @@ public class CustomerServiceImpl implements ICustomerService{
     @Override
     public void withdrawFromCustomerBalance(Long customerId, Withdraw withdraw) {
 
-        withdraw.setCreatedAt(new Date());
-        withdraw.setCreatedBy("admin");
-
         withdraw = withdrawRepository.save(withdraw);
 
         customerRepository.withdrawFromCustomerBalance(customerId, withdraw.getTransactionAmount());
+
+        withdraw.getCustomer().setBalance(withdraw.getCustomer().getBalance().subtract(withdraw.getTransactionAmount()));
     }
 }

@@ -2,6 +2,7 @@ package com.cg.controller;
 
 import com.cg.model.Customer;
 import com.cg.model.Deposit;
+import com.cg.model.dto.DepositRequestDTO;
 import com.cg.service.customer.ICustomerService;
 import com.cg.service.deposit.IDepositService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,29 +36,35 @@ public class DepositController {
     public String showCreateDepositPage(Model model) {
 
         model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
-        model.addAttribute("deposit", new Deposit());
+        model.addAttribute("depositRequestDTO", new DepositRequestDTO());
 
         return "deposit/create_manual";
     }
     @PostMapping("/create")
-    public String doCreate(@Validated @ModelAttribute Deposit deposit, BindingResult bindingResult, Model model) {
+    public String doCreate(@Validated @ModelAttribute DepositRequestDTO depositRequestDTO, BindingResult bindingResult, Model model) {
 
-        Optional<Customer> customerOpt = customerService.findById(deposit.getCustomer().getId());
+        Optional<Customer> customerOpt = customerService.findById(depositRequestDTO.getCustomer().getId());
         if (customerOpt.isPresent()) {
-
+            new DepositRequestDTO().validate(depositRequestDTO,bindingResult);
             if (!bindingResult.hasErrors()) {
-
+                Deposit deposit = new Deposit();
                 Customer customer = customerOpt.get();
+                deposit.setCustomer(customer);
+                long transcationAmount = Long.parseLong(depositRequestDTO.getTransactionAmount());
+                deposit.setTransactionAmount(BigDecimal.valueOf(transcationAmount));
+
                 deposit = customerService.depositToCustomerBalance(customer.getId(), deposit);
                 customer.setBalance(customer.getBalance().add(deposit.getTransactionAmount()));
                 deposit.setTransactionAmount(BigDecimal.ZERO);
 
+                model.addAttribute("success", "Deposited to customer " + deposit.getCustomer().getFullName() + " account successfully");
             }
 
         } else {
            model.addAttribute("error", true);
        }
         model.addAttribute("customers", customerService.findCustomerByDeletedIsFalse());
+        model.addAttribute("depositRequestDTO", depositRequestDTO);
         return "deposit/create_manual";
     }
 }

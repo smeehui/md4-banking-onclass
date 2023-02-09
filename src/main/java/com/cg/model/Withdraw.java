@@ -10,7 +10,7 @@ import java.util.Date;
 
 @Entity
 @Table(name = "withdraws")
-public class Withdraw implements Validator {
+public class Withdraw extends BaseEntity implements Validator {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

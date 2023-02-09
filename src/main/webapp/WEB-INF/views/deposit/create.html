@@ -14,7 +14,7 @@
                 <div class="row mb-3">
                     <div class="col-lg-6">
                         <label for="customerName" class="form-label">Full name</label>
-                        <input type="Text" readonly class="form-control" id="customerName"
+                        <input type="text" readonly class="form-control" id="customerName"
                                th:value="*{customer.fullName}"/>
                     </div>
                     <div class="col-lg-6">
@@ -31,7 +31,7 @@
                     </div>
                     <div class="col-lg-6">
                         <label for="amount" class="form-label">Deposit mount</label>
-                        <input type="number" class="form-control" id="amount"
+                        <input type="text" class="form-control" id="amount"
                                th:field="*{transactionAmount}"/>
                     </div>
                 </div>

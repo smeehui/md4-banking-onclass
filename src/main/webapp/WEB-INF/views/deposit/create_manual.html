@@ -9,11 +9,11 @@
 <th:block th:replace="layout/header_nav::nav-bar('Create new deposit')"/>
 <div class="content">
     <div class="container">
-        <form class="" method="post" th:object="${deposit}">
+        <form class="" method="post" th:object="${depositRequestDTO}">
             <div class="row mb-3">
                 <div class="col-lg-6">
                     <label for="customer" class="form-label">Customer</label>
-                    <select class="form-control" id="customer" name="customer.id" >
+                    <select class="form-select" id="customer" name="customer.id">
                         <option value="-1">--Select customer--</option>
                         <option th:each="customer:${customers}" th:value="${customer.id}"
                                 th:text="${customer.fullName}"></option>
@@ -21,12 +21,12 @@
                 </div>
                 <div class="col-lg-6">
                     <label for="amount" class="form-label">Amount</label>
-                    <input type="number" class="form-control" id="amount" th:field="*{transactionAmount}"/>
+                    <input type="text" class="form-control" id="amount" th:field="*{transactionAmount}"/>
                 </div>
             </div>
             <div class="row mb-3">
                 <div class="mb-3 col-lg-3">
-                    <button type="submit" class="btn btn-outline-primary">Create</button>
+                    <button type="submit" class="btn btn-outline-primary">Deposit</button>
                 </div>
             </div>
         </form>

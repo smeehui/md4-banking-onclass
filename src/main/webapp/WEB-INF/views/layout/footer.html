@@ -6,6 +6,8 @@
     <ul class="container mb-0">
       <li class="my-1" th:if="(${error == true})">Customer not found!</li>
 
+      <li class="my-1" th:text="${error}" th:if="${error != true} and ${error!=null}"></li>
+
       <th:block th:switch="${type}">
         <th:block th:case="'customer'">
           <div th:replace="layout/fragments/errors/customer::customer"></div>
@@ -20,10 +22,6 @@
           <div th:replace="layout/fragments/errors/transfer::transfer"></div>
         </th:block>
       </th:block>
-
-    </ul>
-    <ul class="container mb-0" th:if="${error != true} and ${error!=null}">
-      <li class="m-3" th:text="${error}"></li>
     </ul>
   </footer>
   <footer th:if="${success != null}"

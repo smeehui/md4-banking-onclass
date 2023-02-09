@@ -15,8 +15,7 @@
                 <th>#</th>
                 <th>Customer</th>
                 <th class="text-end">Amount</th>
-                <th>Date</th>
-                <th>Created by</th>
+                <th class="text-center">Date</th>
             </tr>
             </thead>
             <tbody>
@@ -25,8 +24,7 @@
                     <td th:text="${item.id}"></td>
                     <td th:text="${item.customer.fullName}"></td>
                     <td class="text-end" th:text="${item.transactionAmount}"></td>
-                    <td th:text="${item.createdAt}"></td>
-                    <td th:text="${item.createdBy}"></td>
+                    <td class="text-center" th:text="${item.createdAt}"></td>
 
                 </tr>
             </th:block>

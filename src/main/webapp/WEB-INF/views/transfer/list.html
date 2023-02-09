@@ -18,8 +18,7 @@
                 <th class="text-end">Amount</th>
                 <th class="text-end">Fee</th>
                 <th class="text-end">Total amount</th>
-                <th>Date</th>
-                <th>Created by</th>
+                <th class="text-center">Date</th>
             </tr>
             </thead>
             <tbody>
@@ -31,7 +30,7 @@
                     <td class="text-end" th:text="${item.transferAmount}"></td>
                     <td class="text-end" th:text="${item.fees}"></td>
                     <td class="text-end" th:text="${item.transactionAmount}"></td>
-                    <td th:text="${item.createdAt}"></td>
+                    <td th:text="${item.createdAt}" class="text-center"></td>
                 </tr>
             </th:block>
             </tbody>
